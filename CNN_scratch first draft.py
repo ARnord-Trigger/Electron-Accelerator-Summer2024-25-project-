@@ -191,7 +191,7 @@ class Convolutional_Layer:
         self.bias = self.bias - (self.alpha*self.grad_bias)
 
 
-class pooling:
+class Max_pooling:
 
     def __init__(self, pool_dim = 2, stride = 2):
         self.pool_dim = pool_dim
@@ -327,11 +327,11 @@ complete_NN = Neural_Network([
                                 
                                 padding(),
                                 Convolutional_Layer(),
-                                pooling(),
+                                Max_pooling(),
                                 relu(),
                                 padding(),
                                 Convolutional_Layer(),
-                                pooling(),
+                                Max_pooling(),
                                 relu(),
                                 reshaping(),
                                 Linear_Layer(7*7, 24, alpha = al),
