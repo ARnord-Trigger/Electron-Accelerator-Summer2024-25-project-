@@ -8,6 +8,8 @@ import os
 # import extract
 
 def download_data():
+    fields = ['DATE', 'TIME', 'FOUND']
+
     def mmm(mon):
         switcher = {
             1: "Jan",
@@ -54,54 +56,67 @@ def download_data():
             7: "07", 
             8: "08", 
             9: "09", 
-            11: '11'}
+            11: "11"}
         return switcher.get(arg, "error")
     
+    def tab_clicker(path = None , keys = None , sleep_time = 0 ):
+        if path:
+            tab = driver.find_element(By.XPATH , path)
+            tab.click()
+            tab.send_keys(keys)
+            time.sleep(sleep_time)
+        else:
+            pass          
+    folder_path_dic = {'BPI_zip' : 'D:\SummAR_24-25\Electron-Accelerator-Summer2024-25-project-\Project venv\Web scrape\Extracted\Zip_BPI'}
     
+    options = webdriver.ChromeOptions()
     file = "D:\SummAR_24-25\Electron-Accelerator-Summer2024-25-project-\Project venv\Web scrape\BPI.csv"
     preferences = {"download.default_directory": "D:\\SummAR_24-25\\Electron-Accelerator-Summer2024-25-project-\\Project venv\\Web scrape\\DB\\BPI"}
     options.add_experimental_option("prefs", preferences)
     driver = webdriver.Chrome(executable_path=r'D:\SummAR_24-25\Electron-Accelerator-Summer2024-25-project-\Project venv\Web scrape\chromedriver.exe', chrome_options=options)
     driver.get('http://srs2.cat.ernet.in:8100/servlet/Indus2BPIDataDownloadFormHA')
     
-    hours = driver.find_element(By.XPATH ,
-                                '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[4]/select')
-    hours.click()
-    hours.send_keys('0')
-    time.sleep(1)
+    #All xpaths included here
+    XPATH_dict = {'hour_tab' :'/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[4]/select',
+                 'min_tab' : '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[5]/select',
+                 'time_duration_tab' : '/html/body/center/table/tbody/tr/td/form/center[1]/table/tbody/tr/td[4]/select',
+                 'sample_rate_tab' : '/html/body/center/table/tbody/tr/td/form/center[1]/table/tbody/tr/td[2]/select',
+                 'date_tab' : '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[1]/select',
+                 'month_tab' : '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[2]/select',
+                 'year_tab' : '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[3]/select',
+                 'refresh_tab' : '/html/body/center/table/tbody/tr/td/form/center[3]/input[2]',
+                 'download_tab' : '/html/body/center/table/tbody/tr/td/form/center[3]/input[1]'}
     
-    min = driver.find_element(By.XPATH , 
-                              '/html/body/center/table/tbody/tr/td/form/center[2]/table/tbody/tr[2]/td[5]/select')
-    min.click()
-    min.send_keys('0')
-    time.sleep(1)
     
-    timeduration = driver.find_element(By.XPATH,
-        '/html/body/center/table/tbody/tr/td/form/center[1]/table/tbody/tr/td[4]/select')
-    timeduration.click()
-    timeduration.send_keys('4 hrs')
-    time.sleep(1)
     
+    #click hour_tab
+    tab_clicker(path = XPATH_dict['hour_tab'] , keys ='0' , sleep_time = 1)
+    #click minute_tab
+    tab_clicker(path = XPATH_dict['min_tab'] , keys ='0' , sleep_time = 1)
+    #click time_duration
+    tab_clicker(path = XPATH_dict['time_duration_tab'] , keys ='4 hrs' , sleep_time = 1)    
+    
+    #setting current day and prev month 
+    #prev month is chosen because we need to terate from ith day of prv month to ith day of current month 
     current_time = datetime.datetime.now()
-    present_month_key = current_time.month - 1
+    prev_month_key = current_time.month - 1
     present_day =  current_time.day
     
-    present_month_value = mmm(present_month_key) # from numeric to half month name using fxn above mmm
+    # from numeric to half month name using fxn above mmm
+    prev_month_value = mmm(prev_month_key) 
     
-    selected_month = driver.find_element(By.XPATH,
-        '/html/body/center/table/tbody/tr/td/form/center[3]/table/tbody/tr[2]/td[2]/select')
-    selected_month.click()
-    selected_month.send_keys(present_month_value)
-    time.sleep(1)
+    # selecting month
+    tab_clicker(path = XPATH_dict['month_tab'] , keys = prev_month_value , sleep_time = 1)
     
+    #t_day is temp day
     t_day = present_day
-    hour_batch={0 , 4,8,12,16,20}
-    maxdays = ddd(present_month_value)
+    hour_batch={0,4,8,12,16,20}
+    maxdays = ddd(prev_month_value)
     while t_day <= maxdays:
         if t_day < 10 :
             day = padding(t_day)
         else:
             day = str(t_day)
-        date = day + present_month_value + '2024'
-                
+        date = day + prev_month_value + '2024'
+        if os.path.isfile()        
     
