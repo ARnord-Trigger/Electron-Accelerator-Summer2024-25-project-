@@ -64,7 +64,9 @@ def download_data():
         if path:
             tab = driver.find_element(By.XPATH , path)
             tab.click()
-            tab.send_keys(keys)
+            if keys != None:
+                print(keys)
+                tab.send_keys(keys)
             time.sleep(sleep_time)
         else:
             pass          
@@ -108,6 +110,7 @@ def download_data():
     #prev month is chosen because we need to iterate from ith day of prv month to ith day of current month 
     current_time = datetime.datetime.now()
     prev_month_key = current_time.month - 1
+    present_month_key = current_time.month 
     present_day =  current_time.day
     
     # from numeric to half month name using fxn above mmm
@@ -121,7 +124,7 @@ def download_data():
     #t_day is temp day
     #this part runs from present day of prev month to last day of prev month 
     t_day = present_day
-    maxdays = ddd(prev_month_value)
+    maxdays = ddd(prev_month_key)
     while t_day <= maxdays:
         if t_day < 10 :
             day = padding(t_day)
@@ -131,11 +134,12 @@ def download_data():
         
         if os.path.isfile(folder_path_dict['Extracted/Merged_BPI'] + 'BPI' + date + '.csv'):
             t_day += 1
+            print("file found")
             continue
         if t_day == 22:
-            t_day += 1
+            # t_day += 1 # remove this
             day = '222'
-            
+        #this is extractinf data of every 4 hrs : from 00:00 to 20:00   
         for h in hour_batch:
             try:
                 if h < 10:
@@ -143,11 +147,11 @@ def download_data():
                 else:
                     hr = str(h)
                 looping_over_time([BPI_XPATH_dict['hour_tab'] , hr , 0],
-                                  [BPI_XPATH_dict['min_tab'] ,'0', 1 ],
-                                  [BPI_XPATH_dict['date_tab'] , day , 2 ],
+                                  [BPI_XPATH_dict['min_tab'] ,"0", 0 ],
+                                  [BPI_XPATH_dict['date_tab'] , day , 0 ],
                                   [BPI_XPATH_dict['month_tab'] , prev_month_value , 0],
-                                  [BPI_XPATH_dict['time_duration_tab'] , '4 hrs' , 0],
-                                  [BPI_XPATH_dict['download_tab'] , None , 0],
+                                  [BPI_XPATH_dict['time_duration_tab'] , "4 hrs" , 0],
+                                  [BPI_XPATH_dict['download_tab'] , None , 1],
                                   [BPI_XPATH_dict['refresh_tab'] , None , 0])
                 
                 csvData = [{'DATE': day + prev_month_value + '2023', 'TIME': hr + '00 hrs', 'FOUND': 'YES'}]
@@ -155,6 +159,7 @@ def download_data():
                     writer = csv.DictWriter(csvfile, fieldnames=fields)
                     writer.writerows(csvData)
             except:
+                print('ex occured')
                 tab_clicker(path='/html/body/center[2]/a/h2/b')
                 csvData = [{'DATE': day + prev_month_value + '2023', 'TIME': hr + '00 hrs', 'FOUND': 'NO'}]
                 with open(file, 'a') as csvfile:
@@ -184,7 +189,7 @@ def download_data():
         t_day +=1
     
     t_day = 1
-    maxdays = ddd(present_month_value)
+    maxdays = ddd(present_month_key)
     while t_day <= present_day:
         if t_day < 10 :
             day = padding(t_day)
@@ -196,7 +201,7 @@ def download_data():
             t_day += 1
             continue
         if t_day == 22:
-            t_day += 1
+            # t_day += 1 # remove this
             day = '222'
             
         for h in hour_batch:
@@ -206,11 +211,11 @@ def download_data():
                 else:
                     hr = str(h)
                 looping_over_time([BPI_XPATH_dict['hour_tab'] , hr , 0],
-                                  [BPI_XPATH_dict['min_tab'] ,'0', ]
-                                  [BPI_XPATH_dict['date_tab'] , day , 2 ],
+                                  [BPI_XPATH_dict['min_tab'] ,"0", 0]
+                                  [BPI_XPATH_dict['date_tab'] , day , 0 ],
                                   [BPI_XPATH_dict['month_tab'] , present_month_value , 0],
-                                  [BPI_XPATH_dict['time_duration_tab'] , '4 hrs' , 0],
-                                  [BPI_XPATH_dict['download_tab'] , None , 0],
+                                  [BPI_XPATH_dict['time_duration_tab'] , "4 hrs" , 0],
+                                  [BPI_XPATH_dict['download_tab'] , None , 1],
                                   [BPI_XPATH_dict['refresh_tab'] , None , 0])
                 
                 csvData = [{'DATE': day + present_month_value + '2023', 'TIME': hr + '00 hrs', 'FOUND': 'YES'}]
