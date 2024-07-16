@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>847</width>
-    <height>519</height>
+    <width>963</width>
+    <height>629</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -32,7 +32,11 @@
        </widget>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_5"/>
+       <layout class="QVBoxLayout" name="verticalLayout_5">
+        <item>
+         <widget class="MplWidget" name="MplWidget" native="true"/>
+        </item>
+       </layout>
       </item>
      </layout>
     </item>
@@ -60,15 +64,27 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_4"/>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QWidget" name="widget" native="true"/>
+        </item>
+       </layout>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_3">
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_6"/>
+         <layout class="QVBoxLayout" name="verticalLayout_6">
+          <item>
+           <widget class="MplWidget" name="MplWidget_2" native="true"/>
+          </item>
+         </layout>
         </item>
         <item>
-         <layout class="QVBoxLayout" name="verticalLayout_7"/>
+         <layout class="QVBoxLayout" name="verticalLayout_7">
+          <item>
+           <widget class="MplWidget" name="MplWidget_3" native="true"/>
+          </item>
+         </layout>
         </item>
        </layout>
       </item>
@@ -92,13 +108,29 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>847</width>
-     <height>21</height>
+     <width>963</width>
+     <height>26</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MplWidget</class>
+   <extends>QWidget</extends>
+   <header>mplwidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <tabstops>
+  <tabstop>pushButton</tabstop>
+  <tabstop>checkBox_2</tabstop>
+  <tabstop>checkBox</tabstop>
+  <tabstop>pushButton_3</tabstop>
+  <tabstop>checkBox_3</tabstop>
+  <tabstop>pushButton_2</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

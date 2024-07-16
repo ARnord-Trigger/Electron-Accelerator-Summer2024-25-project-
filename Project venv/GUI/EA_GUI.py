@@ -89,17 +89,22 @@ class MainWin(QMainWindow):
         
         button2 = QPushButton("Plot Data")
         button2.setCheckable(True)
-        button2.clicked.connect(self.plotter)        
+        button2.clicked.connect(self.plotter)  
+        
+        button3 = QPushButton("Train Model")
+        button3.setCheckable(True)
+        # button3.clicked.connect(self.train_model)        
         
         #adding button to layout
         BBC_layout.addWidget(button1)
         BBC_layout.addWidget(button2)
+        BBC_layout.addWidget(button3)
         
         # state checkboxes
         # creating checkboxes
-        self.checkbox1 = QCheckBox("state 1")
+        self.checkbox1 = QCheckBox("Injection")
         self.checkbox2 = QCheckBox("Ramping")
-        self.checkbox3 = QCheckBox("state 3")
+        self.checkbox3 = QCheckBox("storage ")
         
         #connect statechange signal to a slot method
         self.checkbox1.stateChanged.connect(self.beam_state_selector)
@@ -229,6 +234,10 @@ class MainWin(QMainWindow):
         else:
             self.scroll_area.show()
             self.toggle_button.setText("Collapse")
+            
+    def train_model(self):
+        # call the header file having cnn 
+        pass
             
         
 app = QApplication(sys.argv)
