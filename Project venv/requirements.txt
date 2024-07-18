@@ -5,3 +5,7 @@ csv
 zipfile
 os
 extract
+pyqtgraph
+numpy
+pandas
+tensorflow
